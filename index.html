@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Forgotten Page — Thank-You Page Swipe File</title>
+  <meta name="description" content="The best thank-you pages in the creator economy — collected, curated, and annotated.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --gray-900: #1a1a1a;
+      --gray-700: #404040;
+      --gray-500: #737373;
+      --gray-300: #d4d4d4;
+      --gray-100: #f5f5f5;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ─────────────────────────────────────── */
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 24px 40px;
+      border-bottom: 1px solid var(--gray-300);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      margin-bottom: 14px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--gray-500);
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* ── CONTROLS ───────────────────────────────────── */
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-500);
+      pointer-events: none;
+      font-size: 14px;
+    }
+
+    .search-input {
+      padding: 9px 14px 9px 36px;
+      border: 1px solid var(--gray-300);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      width: 260px;
+      transition: border-color 0.15s;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    .search-input::placeholder { color: var(--gray-500); }
+    .search-input:focus { border-color: var(--black); }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--gray-300);
+      border-radius: 100px;
+      background: var(--white);
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--gray-700);
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover { border-color: var(--gray-700); color: var(--black); }
+    .filter-btn.active { background: var(--black); border-color: var(--black); color: var(--white); }
+
+    /* ── MAIN ───────────────────────────────────────── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    .results-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .results-count {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    /* ── GRID ───────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── CARD ───────────────────────────────────────── */
+    .card {
+      border: 1px solid var(--gray-300);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      background: var(--white);
+    }
+
+    .card:hover {
+      border-color: var(--gray-700);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: var(--gray-100);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-screenshot {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-screenshot { transform: scale(1.02); }
+
+    .card-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--gray-500);
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-placeholder svg { opacity: 0.4; }
+
+    .card-body {
+      padding: 16px 18px 18px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .card-name {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .card-creator {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 9px;
+      background: var(--gray-100);
+      border-radius: 100px;
+      color: var(--gray-700);
+      white-space: nowrap;
+    }
+
+    /* ── NO RESULTS ─────────────────────────────────── */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--gray-500);
+    }
+
+    .no-results p:first-child {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 8px;
+    }
+
+    /* ── MODAL ──────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      padding: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--white);
+      border-radius: 16px;
+      max-width: 780px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+      animation: modal-in 0.2s ease;
+    }
+
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-img-wrap {
+      width: 100%;
+      background: var(--gray-100);
+      border-radius: 16px 16px 0 0;
+      overflow: hidden;
+      max-height: 400px;
+    }
+
+    .modal-screenshot {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    .modal-placeholder {
+      width: 100%;
+      height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-500);
+      font-size: 14px;
+      gap: 8px;
+    }
+
+    .modal-body { padding: 28px 32px 32px; }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .modal-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .modal-creator {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    .close-btn {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--gray-300);
+      background: var(--white);
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      color: var(--gray-700);
+    }
+
+    .close-btn:hover { background: var(--gray-100); }
+
+    .modal-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .modal-divider {
+      height: 1px;
+      background: var(--gray-100);
+      margin-bottom: 20px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 10px;
+    }
+
+    .modal-note {
+      font-size: 15px;
+      color: var(--gray-700);
+      line-height: 1.75;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      text-decoration: none;
+      border-bottom: 1px solid var(--gray-300);
+      padding-bottom: 1px;
+      transition: border-color 0.15s;
+    }
+
+    .modal-link:hover { border-color: var(--black); }
+
+    /* ── SUBMIT SECTION ─────────────────────────────── */
+    .submit-section {
+      border-top: 1px solid var(--gray-300);
+    }
+
+    .submit-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .submit-text h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .submit-text p {
+      font-size: 15px;
+      color: var(--gray-500);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-dark { background: var(--black); color: var(--white); border: none; }
+    .btn-dark:hover { opacity: 0.75; }
+
+    /* ── FOOTER ─────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--gray-300);
+      padding: 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    footer a { color: var(--gray-700); text-decoration: none; }
+    footer a:hover { color: var(--black); }
+
+    /* ── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 640px) {
+      .search-input { width: 100%; }
+      .controls { flex-direction: column; align-items: flex-start; }
+      .submit-inner { flex-direction: column; }
+      .modal-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <span class="eyebrow">Free Swipe File</span>
+    <h1>The Forgotten Page</h1>
+    <p class="subtitle">The best thank-you pages in the creator economy — collected, curated, and annotated so you can steal what works.</p>
+    <div class="controls">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" type="search" id="search" placeholder="Search creators, niches...">
+      </div>
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN GRID -->
+<main>
+  <div class="results-meta">
+    <span class="results-count" id="count"></span>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- SUBMIT CTA -->
+<section class="submit-section">
+  <div class="submit-inner">
+    <div class="submit-text">
+      <h2>Got a great thank-you page?</h2>
+      <p>Submit it and we'll add it to the collection.</p>
+    </div>
+    <!-- Replace # with your Google Form or Tally form link -->
+    <a href="#" class="btn btn-dark">Submit yours →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span>Curated by <a href="https://growthcurrency.net" target="_blank">Dylan</a></span>
+    <a href="#">Learn to build a better thank-you page →</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
+  <div class="modal" id="modal-inner">
+    <div class="modal-img-wrap" id="modal-img-wrap"></div>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div>
+          <div class="modal-name" id="modal-name"></div>
+          <div class="modal-creator" id="modal-creator"></div>
+        </div>
+        <button class="close-btn" id="close-btn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-tags" id="modal-tags"></div>
+      <div class="modal-divider"></div>
+      <div class="section-label">Why it works</div>
+      <p class="modal-note" id="modal-note"></p>
+      <a href="#" class="modal-link" id="modal-link" target="_blank" rel="noopener">Visit their site ↗</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA
+// To add a new entry, copy one object below and fill in the fields.
+// screenshot: path to an image file inside the /images/ folder
+//             e.g. "images/beehiiv.png"
+// If no screenshot yet, set it to "" and a placeholder will show.
+// ─────────────────────────────────────────────────────────────────────────────
+const entries = [
+  {
+    name: "beehiiv",
+    creator: "Tyler Denk",
+    url: "https://beehiiv.com",
+    screenshot: "",
+    niche: "SaaS / Newsletter Tool",
+    cta: "Community",
+    tags: ["SaaS", "Community", "Clean"],
+    note: "Immediately confirms you're in, sets an expectation for what arrives next, and drives you into their user community as a single next step. No friction, no distractions."
+  },
+  {
+    name: "The Hustle",
+    creator: "HubSpot",
+    url: "https://thehustle.co",
+    screenshot: "",
+    niche: "Newsletter",
+    cta: "Social follow",
+    tags: ["Newsletter", "Social Follow", "Minimal"],
+    note: "Classic and clean. The confirmation copy is friendly without being over the top, and the Twitter follow CTA keeps you in their ecosystem without asking for too much."
+  },
+  {
+    name: "Morning Brew",
+    creator: "Morning Brew",
+    url: "https://morningbrew.com",
+    screenshot: "",
+    niche: "Newsletter",
+    cta: "Referral",
+    tags: ["Newsletter", "Referral", "Brand-forward"],
+    note: "Turns the thank-you moment into a referral machine. The referral CTA feels natural because the copy celebrates the action you just took before asking for more."
+  },
+  {
+    name: "Stacked Marketer",
+    creator: "Stacked Marketer",
+    url: "https://stackedmarketer.com",
+    screenshot: "",
+    niche: "Newsletter",
+    cta: "Whitelist",
+    tags: ["Newsletter", "Deliverability", "Instructional"],
+    note: "Smart play: the entire page is focused on getting subscribers to whitelist the email address so it doesn't land in spam. Sacrifices aesthetics for a real engagement goal."
+  },
+  {
+    name: "Creator Science",
+    creator: "Jay Clouse",
+    url: "https://creatorscience.com",
+    screenshot: "",
+    niche: "Creator",
+    cta: "Podcast / Content",
+    tags: ["Creator", "Content", "Personal"],
+    note: "Uses the thank-you page to drive podcast listens — the thank-you moment is used to deepen the relationship beyond the inbox with other content formats."
+  },
+  {
+    name: "Growth Currency",
+    creator: "Dylan",
+    url: "https://growthcurrency.net",
+    screenshot: "",
+    niche: "Newsletter",
+    cta: "Social follow",
+    tags: ["Newsletter", "Social Follow", "Minimal"],
+    note: "Placeholder — add your own thank-you page here once it's live!"
+  }
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// APP
+// ─────────────────────────────────────────────────────────────────────────────
+const grid      = document.getElementById('grid');
+const countEl   = document.getElementById('count');
+const searchEl  = document.getElementById('search');
+const filtersEl = document.getElementById('filters');
+const modal     = document.getElementById('modal');
+
+let activeFilter = 'all';
+let searchQuery  = '';
+
+// Build filter pills from unique niches
+const niches = [...new Set(entries.map(e => e.niche))];
+niches.forEach(niche => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn';
+  btn.dataset.filter = niche;
+  btn.textContent = niche;
+  btn.addEventListener('click', () => {
+    activeFilter = niche;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+  filtersEl.appendChild(btn);
+});
+
+document.querySelector('[data-filter="all"]').addEventListener('click', function() {
+  activeFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  this.classList.add('active');
+  render();
+});
+
+searchEl.addEventListener('input', e => {
+  searchQuery = e.target.value.toLowerCase().trim();
+  render();
+});
+
+function placeholder() {
+  return `
+    <div class="card-placeholder">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+      </svg>
+      Screenshot coming soon
+    </div>`;
+}
+
+function render() {
+  const filtered = entries.filter(e => {
+    const matchFilter = activeFilter === 'all' || e.niche === activeFilter;
+    const matchSearch = !searchQuery ||
+      e.name.toLowerCase().includes(searchQuery) ||
+      e.creator.toLowerCase().includes(searchQuery) ||
+      e.tags.some(t => t.toLowerCase().includes(searchQuery)) ||
+      e.niche.toLowerCase().includes(searchQuery);
+    return matchFilter && matchSearch;
+  });
+
+  countEl.textContent = `${filtered.length} example${filtered.length !== 1 ? 's' : ''}`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="no-results">
+        <p>Nothing found</p>
+        <p>Try a different search or filter.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(e => {
+    const idx = entries.indexOf(e);
+    const imgHtml = e.screenshot
+      ? `<img class="card-screenshot" src="${e.screenshot}" alt="${e.name} thank-you page" loading="lazy">`
+      : placeholder();
+    return `
+      <article class="card" onclick="openModal(${idx})" role="button" tabindex="0" aria-label="View ${e.name}">
+        <div class="card-img-wrap">${imgHtml}</div>
+        <div class="card-body">
+          <div class="card-top">
+            <div>
+              <div class="card-name">${e.name}</div>
+              <div class="card-creator">${e.creator}</div>
+            </div>
+          </div>
+          <div class="card-tags">
+            ${e.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+          </div>
+        </div>
+      </article>`;
+  }).join('');
+}
+
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+function openModal(idx) {
+  const e = entries[idx];
+  const imgWrap = document.getElementById('modal-img-wrap');
+
+  if (e.screenshot) {
+    imgWrap.innerHTML = `<img class="modal-screenshot" src="${e.screenshot}" alt="${e.name} thank-you page">`;
+  } else {
+    imgWrap.innerHTML = `<div class="modal-placeholder">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+      </svg>
+      Screenshot coming soon
+    </div>`;
+  }
+
+  document.getElementById('modal-name').textContent = e.name;
+  document.getElementById('modal-creator').textContent = e.creator;
+  document.getElementById('modal-note').textContent = e.note;
+  document.getElementById('modal-tags').innerHTML = e.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+  const link = document.getElementById('modal-link');
+  link.href = e.url || '#';
+  link.style.display = e.url ? 'inline-flex' : 'none';
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.getElementById('close-btn').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Keyboard nav for cards
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.classList.contains('card')) {
+    e.target.click();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
